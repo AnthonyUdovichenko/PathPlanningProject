@@ -4,7 +4,6 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
-#include <math.h>
 
 Config::Config()
 {

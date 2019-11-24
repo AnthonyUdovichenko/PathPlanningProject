@@ -1,8 +1,20 @@
 #include "xmllogger.h"
 #include <iostream>
+#include <string>
+#include <sstream>
 
 using tinyxml2::XMLElement;
 using tinyxml2::XMLNode;
+
+namespace patch
+{
+    template<typename T> std::string to_string(const T& n)
+    {
+        std::ostringstream stm;
+        stm << n;
+        return stm.str();
+    }
+}
 
 bool XmlLogger::getLog(const char *FileName, const std::string *LogParams)
 {
@@ -111,7 +123,7 @@ void XmlLogger::writeToLogMap(const Map &map, const std::list<Node> &path)
                     break;
                 }
             if (!inPath)
-                str += std::to_string(map.getValue(i,j));
+                str += patch::to_string(map.getValue(i,j));
             else
                 str += CNS_OTHER_PATHSELECTION;
             str += CNS_OTHER_MATRIXSEPARATOR;
@@ -188,7 +200,7 @@ void XmlLogger::writeToLogSummary(unsigned int numberofsteps, unsigned int nodes
     element->SetAttribute(CNS_TAG_ATTR_NODESCREATED, nodescreated);
     element->SetAttribute(CNS_TAG_ATTR_LENGTH, length);
     element->SetAttribute(CNS_TAG_ATTR_LENGTH_SCALED, length*cellSize);
-    element->SetAttribute(CNS_TAG_ATTR_TIME, std::to_string(time).c_str());
+    element->SetAttribute(CNS_TAG_ATTR_TIME, patch::to_string(time).c_str());
 }
 
 void XmlLogger::writeToLogNotFound()
