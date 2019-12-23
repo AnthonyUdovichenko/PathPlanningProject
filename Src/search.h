@@ -14,10 +14,12 @@ class Search
     public:
         Search();
         ~Search(void);
-        SearchResult startSearch(ILogger *Logger, const Map &Map, const EnvironmentOptions &options);
+        SearchResult startSearch(ILogger *Logger, const Map &Map, const EnvironmentOptions &options, int algorithm);
 
     protected:
         //CODE HERE
+        static double heuristic(const Node &node, const Map &map, const EnvironmentOptions &options, int algorithm);
+        static std::vector<Node *> generateAllSuccs(Node *cur, const Map &map, const EnvironmentOptions &options, int algorithm);
 
         //Hint 1. You definetely need class variables for OPEN and CLOSE
 
