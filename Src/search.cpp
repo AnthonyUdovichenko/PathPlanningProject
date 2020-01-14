@@ -14,15 +14,20 @@ double Search::heuristic(const Node &node, const Map &map, const EnvironmentOpti
     }
 
     if (options.metrictype == CN_SP_MT_MANH) {
-        return map.getCellSize() * (abs(node.i - map.getGoalX()) + abs(node.j - map.getGoalY()));
+        return abs(node.i - map.getGoalX()) + abs(node.j - map.getGoalY());
     }
 
     if (options.metrictype == CN_SP_MT_CHEB) {
-        return map.getCellSize() * std::max(abs(node.i - map.getGoalX()), abs(node.j - map.getGoalY()));
+        return std::max(abs(node.i - map.getGoalX()), abs(node.j - map.getGoalY()));
     }
 
-    if (options.metrictype == CN_SP_MT_EUCL || options.metrictype == CN_SP_MT_DIAG) {
-        return map.getCellSize() * sqrt(pow(node.i - map.getGoalX(), 2) + pow(node.j - map.getGoalY(), 2));
+    if (options.metrictype == CN_SP_MT_EUCL) {
+        return sqrt(pow(node.i - map.getGoalX(), 2) + pow(node.j - map.getGoalY(), 2));
+    }
+
+    if (options.metrictype == CN_SP_MT_DIAG) {
+        return CN_SQRT_TWO * std::min(abs(node.i - map.getGoalX()), abs(node.j - map.getGoalY())) +
+        abs(abs(node.i - map.getGoalX()) - abs(node.j - map.getGoalY()));
     }
 
     return 0;
@@ -49,7 +54,7 @@ std::vector<Node *> Search::generateAllSuccs(Node *cur, const Map &map, const En
             Node *add = new Node;
             add->i = cur->i;
             add->j = cur->j - 1;
-            add->g = cur->g + map.getCellSize();
+            add->g = cur->g + 1;
             add->H = Search::heuristic(*add, map, options, algorithm);
             add->F = add->g + add->H;
             add->parent = cur;
@@ -61,7 +66,7 @@ std::vector<Node *> Search::generateAllSuccs(Node *cur, const Map &map, const En
             Node *add = new Node;
             add->i = cur->i;
             add->j = cur->j + 1;
-            add->g = cur->g + map.getCellSize();
+            add->g = cur->g + 1;
             add->H = Search::heuristic(*add, map, options, algorithm);
             add->F = add->g + add->H;
             add->parent = cur;
@@ -73,7 +78,7 @@ std::vector<Node *> Search::generateAllSuccs(Node *cur, const Map &map, const En
             Node *add = new Node;
             add->i = cur->i - 1;
             add->j = cur->j;
-            add->g = cur->g + map.getCellSize();
+            add->g = cur->g + 1;
             add->H = Search::heuristic(*add, map, options, algorithm);
             add->F = add->g + add->H;
             add->parent = cur;
@@ -85,7 +90,7 @@ std::vector<Node *> Search::generateAllSuccs(Node *cur, const Map &map, const En
             Node *add = new Node;
             add->i = cur->i + 1;
             add->j = cur->j;
-            add->g = cur->g + map.getCellSize();
+            add->g = cur->g + 1;
             add->H = Search::heuristic(*add, map, options, algorithm);
             add->F = add->g + add->H;
             add->parent = cur;
@@ -102,7 +107,7 @@ std::vector<Node *> Search::generateAllSuccs(Node *cur, const Map &map, const En
                     Node *add = new Node;
                     add->i = cur->i + 1;
                     add->j = cur->j - 1;
-                    add->g = cur->g + CN_SQRT_TWO * map.getCellSize();
+                    add->g = cur->g + CN_SQRT_TWO;
                     add->H = Search::heuristic(*add, map, options, algorithm);
                     add->F = add->g + add->H;
                     add->parent = cur;
@@ -119,7 +124,7 @@ std::vector<Node *> Search::generateAllSuccs(Node *cur, const Map &map, const En
                     Node *add = new Node;
                     add->i = cur->i - 1;
                     add->j = cur->j - 1;
-                    add->g = cur->g + CN_SQRT_TWO * map.getCellSize();
+                    add->g = cur->g + CN_SQRT_TWO;
                     add->H = Search::heuristic(*add, map, options, algorithm);
                     add->F = add->g + add->H;
                     add->parent = cur;
@@ -136,7 +141,7 @@ std::vector<Node *> Search::generateAllSuccs(Node *cur, const Map &map, const En
                     Node *add = new Node;
                     add->i = cur->i + 1;
                     add->j = cur->j + 1;
-                    add->g = cur->g + CN_SQRT_TWO * map.getCellSize();
+                    add->g = cur->g + CN_SQRT_TWO;
                     add->H = Search::heuristic(*add, map, options, algorithm);
                     add->F = add->g + add->H;
                     add->parent = cur;
@@ -153,7 +158,7 @@ std::vector<Node *> Search::generateAllSuccs(Node *cur, const Map &map, const En
                     Node *add = new Node;
                     add->i = cur->i - 1;
                     add->j = cur->j + 1;
-                    add->g = cur->g + CN_SQRT_TWO * map.getCellSize();
+                    add->g = cur->g + CN_SQRT_TWO;
                     add->H = Search::heuristic(*add, map, options, algorithm);
                     add->F = add->g + add->H;
                     add->parent = cur;
@@ -165,9 +170,17 @@ std::vector<Node *> Search::generateAllSuccs(Node *cur, const Map &map, const En
     return SUCC;
 }
 
+int Search::xDiff(Node &first, Node &second) {
+    return second.i - first.i;
+}
+
+int Search::yDiff(Node &first, Node &second) {
+    return second.j - first.j;
+}
+
 SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options, int algorithm)
 {
-    //need to implement
+    unsigned int start_time = clock();
     Node* start = new Node;
     start->i = map.getStartX();
     start->j = map.getStartY();
@@ -179,7 +192,9 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     std::vector<Node *> OPEN = {start};
     std::vector<Node *> CLOSED = {};
 
+    sresult.numberofsteps = 0;
     while (!OPEN.empty()) {
+        ++sresult.numberofsteps;
         int cur_pos = argmin(OPEN);
         Node* cur = OPEN[cur_pos];
         CLOSED.push_back(cur);
@@ -187,13 +202,26 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
         if (cur->i == map.getGoalX() && cur->j == map.getGoalY()) {
             sresult.pathfound = true;
             sresult.pathlength = cur->g;
+            lppath.push_front(*cur);
+            hppath.push_front(*cur);
+            cur = cur->parent;
             while (cur != nullptr) {
+                if ((int)lppath.size() >= 2 &&
+                    (xDiff(*lppath.begin(), *next(lppath.begin())) != xDiff(*cur, *lppath.begin()) ||
+                     yDiff(*lppath.begin(), *next(lppath.begin())) != yDiff(*cur, *lppath.begin()))) {
+                    hppath.push_front(*lppath.begin());
+                }
                 lppath.push_front(*cur);
+                if (cur == start) {
+                    hppath.push_front(*cur);
+                }
                 cur = cur->parent;
             }
             sresult.nodescreated = OPEN.size() + CLOSED.size();
             sresult.lppath = &lppath;
             sresult.hppath = &hppath;
+            unsigned int end_time = clock();
+            sresult.time = (double) (end_time - start_time) / CLOCKS_PER_SEC;
             return sresult;
         }
         std::vector<Node *> SUCC = generateAllSuccs(cur, map, options, algorithm);
@@ -225,11 +253,14 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     }
 
     sresult.pathfound = false;
+    sresult.pathlength = 0;
     /*sresult.nodescreated =  ;
     sresult.numberofsteps = ;
     sresult.time = ;*/
     sresult.hppath = &hppath;
     sresult.lppath = &lppath;
+    unsigned int end_time = clock();
+    sresult.time = (double) (end_time - start_time) / CLOCKS_PER_SEC;
     return sresult;
 }
 

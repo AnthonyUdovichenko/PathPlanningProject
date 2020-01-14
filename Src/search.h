@@ -5,9 +5,11 @@
 #include "environmentoptions.h"
 #include <list>
 #include <vector>
-#include <math.h>
+#include <cmath>
 #include <limits>
 #include <chrono>
+#include <ctime>
+#include <iterator>
 
 class Search
 {
@@ -20,6 +22,8 @@ class Search
         //CODE HERE
         static double heuristic(const Node &node, const Map &map, const EnvironmentOptions &options, int algorithm);
         static std::vector<Node *> generateAllSuccs(Node *cur, const Map &map, const EnvironmentOptions &options, int algorithm);
+        static int xDiff(Node &first, Node &second);
+        static int yDiff(Node &first, Node &second);
 
         //Hint 1. You definetely need class variables for OPEN and CLOSE
 
