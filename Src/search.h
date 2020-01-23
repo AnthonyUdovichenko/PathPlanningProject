@@ -10,6 +10,8 @@
 #include <chrono>
 #include <ctime>
 #include <iterator>
+#include <set>
+#include <algorithm>
 
 class Search
 {
@@ -21,7 +23,7 @@ class Search
     protected:
         //CODE HERE
         static double heuristic(const Node &node, const Map &map, const EnvironmentOptions &options, int algorithm);
-        static std::vector<Node *> generateAllSuccs(Node *cur, const Map &map, const EnvironmentOptions &options, int algorithm);
+        static std::vector<Node> generateAllSuccs(Node &cur, const Map &map, const EnvironmentOptions &options, int algorithm);
         static int xDiff(Node &first, Node &second);
         static int yDiff(Node &first, Node &second);
 
