@@ -12,6 +12,7 @@
 #include <iterator>
 #include <set>
 #include <algorithm>
+#include <unordered_map>
 
 class Search
 {

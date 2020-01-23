@@ -178,6 +178,12 @@ int Search::yDiff(Node &first, Node &second) {
     return second.j - first.j;
 }
 
+struct PairHash {
+    std::size_t operator() (const std::pair<int, int> &pair) const {
+        return std::hash<std::size_t>() ((size_t) pair.first * 1000000000 + (size_t) pair.second);
+    }
+};
+
 SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options, int algorithm)
 {
     unsigned int start_time = clock();
@@ -190,14 +196,14 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     start.parent = {-1, -1};
 
     std::vector<Node> OPEN = {start};
-    std::vector<Node> CLOSED = {};
+    std::unordered_map<std::pair<int, int>, Node, PairHash> CLOSED;
 
     sresult.numberofsteps = 0;
     while (!OPEN.empty()) {
         ++sresult.numberofsteps;
         int cur_pos = argmin(OPEN);
         Node cur = OPEN[cur_pos];
-        CLOSED.push_back(cur);
+        CLOSED[{cur.i, cur.j}] = cur;
         OPEN.erase(OPEN.begin() + cur_pos);
         if (cur.i == map.getGoalX() && cur.j == map.getGoalY()) {
             sresult.pathfound = true;
@@ -205,7 +211,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
             lppath.push_front(cur);
             hppath.push_front(cur);
             while (cur.parent != std::make_pair(-1, -1)) {
-                cur = *std::find(CLOSED.begin(), CLOSED.end(), Node(cur.parent.first, cur.parent.second));
+                cur = CLOSED.find(cur.parent)->second;
                 if ((int)lppath.size() >= 2 &&
                     (xDiff(*lppath.begin(), *next(lppath.begin())) != xDiff(cur, *lppath.begin()) ||
                      yDiff(*lppath.begin(), *next(lppath.begin())) != yDiff(cur, *lppath.begin()))) {
@@ -238,12 +244,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
                 }
             }
             if (!found_in_OPEN) {
-                bool found_in_CLOSED = false;
-                for (const Node &cl : CLOSED) {
-                    if (node == cl) {
-                        found_in_CLOSED = true;
-                    }
-                }
+                bool found_in_CLOSED = (CLOSED.find({node.i, node.j}) != CLOSED.end());
                 if (!found_in_CLOSED) {
                     OPEN.push_back(node);
                 }
