@@ -15,6 +15,28 @@
 
 На данный момент поддерживаются алгоритм Дейкстры и алгоритм A*.
 
+### Входные данные
+
+На вход в качестве аргумента командной строки подаётся XML-файл, имеющий следующую структуру:
+
+`<root>`<br>
+&nbsp;&nbsp;&nbsp;&nbsp; `<map>` — параметры карты<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<width>` — ширина карты (количество клеток по оси X)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<height>` — высота карты (количество клеток по оси Y)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<startx>` — координата начальной точки по X<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<starty>` — координата начальной точки по Y<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<finishx>` — координата конечной точки по X<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<finishy>` — координата конечной точки по Y<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<grid>` — сама карта<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<row>` — строка карты<br>
+&nbsp;&nbsp;&nbsp;&nbsp; `<algorithm>` — параметры алгоритма<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<metrictype>` — метрика, используемая в эвристической функции (`euclidean`, `manhattan`, `chebyshev` или `diagonal`)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<searchtype>` — алгоритм поиска (`dijkstra` или `astar`)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<hweight>` — вес эвристики<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<allowdiagonal>` — можно ли делать диагональные ходы<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<cutcorners>` — можно ли делать диагональные ходы, когда одна соседняя клетка занята<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<allowsqueeze>` — можно ли делать ходы через "бутылочное горлышко"<br>
+&nbsp;&nbsp;&nbsp;&nbsp; `<options>` — параметры отображения результата
 
 ### Сборка и запуск
 
