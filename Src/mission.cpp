@@ -52,7 +52,7 @@ void Mission::createSearch()
 
 void Mission::startSearch()
 {
-    sr = search.startSearch(logger, map, options, config.SearchParams[CN_SP_ST]);
+    sr = search.startSearch(logger, map, options, config.SearchParams[CN_SP_ST], config.SearchParams[CN_SP_HW]);
 }
 
 void Mission::printSearchResultsToConsole()

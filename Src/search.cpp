@@ -47,7 +47,7 @@ int argmin(const std::vector<Node> &OPEN) {
     return result;
 }
 
-std::vector<Node> Search::generateAllSuccs(Node &cur, const Map &map, const EnvironmentOptions &options, int algorithm) {
+std::vector<Node> Search::generateAllSuccs(Node &cur, const Map &map, const EnvironmentOptions &options, int algorithm, int heuristic_weight) {
     std::vector<Node> SUCC = {};
     if (map.CellOnGrid(cur.i, cur.j - 1)) {
         if (map.CellIsTraversable(cur.i, cur.j - 1)) {
@@ -56,7 +56,7 @@ std::vector<Node> Search::generateAllSuccs(Node &cur, const Map &map, const Envi
             add.j = cur.j - 1;
             add.g = cur.g + 1;
             add.H = Search::heuristic(add, map, options, algorithm);
-            add.F = add.g + add.H;
+            add.F = add.g + heuristic_weight * add.H;
             add.parent = {cur.i, cur.j};
             SUCC.push_back(add);
         }
@@ -68,7 +68,7 @@ std::vector<Node> Search::generateAllSuccs(Node &cur, const Map &map, const Envi
             add.j = cur.j + 1;
             add.g = cur.g + 1;
             add.H = Search::heuristic(add, map, options, algorithm);
-            add.F = add.g + add.H;
+            add.F = add.g + heuristic_weight * add.H;
             add.parent = {cur.i, cur.j};
             SUCC.push_back(add);
         }
@@ -80,7 +80,7 @@ std::vector<Node> Search::generateAllSuccs(Node &cur, const Map &map, const Envi
             add.j = cur.j;
             add.g = cur.g + 1;
             add.H = Search::heuristic(add, map, options, algorithm);
-            add.F = add.g + add.H;
+            add.F = add.g + heuristic_weight * add.H;
             add.parent = {cur.i, cur.j};
             SUCC.push_back(add);
         }
@@ -92,7 +92,7 @@ std::vector<Node> Search::generateAllSuccs(Node &cur, const Map &map, const Envi
             add.j = cur.j;
             add.g = cur.g + 1;
             add.H = Search::heuristic(add, map, options, algorithm);
-            add.F = add.g + add.H;
+            add.F = add.g + heuristic_weight * add.H;
             add.parent = {cur.i, cur.j};
             SUCC.push_back(add);
         }
@@ -109,7 +109,7 @@ std::vector<Node> Search::generateAllSuccs(Node &cur, const Map &map, const Envi
                     add.j = cur.j - 1;
                     add.g = cur.g + CN_SQRT_TWO;
                     add.H = Search::heuristic(add, map, options, algorithm);
-                    add.F = add.g + add.H;
+                    add.F = add.g + heuristic_weight * add.H;
                     add.parent = {cur.i, cur.j};
                     SUCC.push_back(add);
                 }
@@ -126,7 +126,7 @@ std::vector<Node> Search::generateAllSuccs(Node &cur, const Map &map, const Envi
                     add.j = cur.j - 1;
                     add.g = cur.g + CN_SQRT_TWO;
                     add.H = Search::heuristic(add, map, options, algorithm);
-                    add.F = add.g + add.H;
+                    add.F = add.g + heuristic_weight * add.H;
                     add.parent = {cur.i, cur.j};
                     SUCC.push_back(add);
                 }
@@ -143,7 +143,7 @@ std::vector<Node> Search::generateAllSuccs(Node &cur, const Map &map, const Envi
                     add.j = cur.j + 1;
                     add.g = cur.g + CN_SQRT_TWO;
                     add.H = Search::heuristic(add, map, options, algorithm);
-                    add.F = add.g + add.H;
+                    add.F = add.g + heuristic_weight * add.H;
                     add.parent = {cur.i, cur.j};
                     SUCC.push_back(add);
                 }
@@ -160,7 +160,7 @@ std::vector<Node> Search::generateAllSuccs(Node &cur, const Map &map, const Envi
                     add.j = cur.j + 1;
                     add.g = cur.g + CN_SQRT_TWO;
                     add.H = Search::heuristic(add, map, options, algorithm);
-                    add.F = add.g + add.H;
+                    add.F = add.g + heuristic_weight * add.H;
                     add.parent = {cur.i, cur.j};
                     SUCC.push_back(add);
                 }
@@ -184,7 +184,7 @@ struct PairHash {
     }
 };
 
-SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options, int algorithm)
+SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options, int algorithm, int heuristic_weight)
 {
     unsigned int start_time = clock();
     Node start{};
@@ -192,7 +192,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     start.j = map.getStartY();
     start.g = 0;
     start.H = heuristic(start, map, options, algorithm);
-    start.F = start.H;
+    start.F = heuristic_weight * start.H;
     start.parent = {-1, -1};
 
     std::vector<Node> OPEN = {start};
@@ -229,7 +229,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
             sresult.time = (double) (end_time - start_time) / CLOCKS_PER_SEC;
             return sresult;
         }
-        std::vector<Node> SUCC = generateAllSuccs(cur, map, options, algorithm);
+        std::vector<Node> SUCC = generateAllSuccs(cur, map, options, algorithm, heuristic_weight);
         for (Node &node : SUCC) {
             bool found_in_OPEN = false;
             for (Node &op : OPEN) {

@@ -19,12 +19,12 @@ class Search
     public:
         Search();
         ~Search(void);
-        SearchResult startSearch(ILogger *Logger, const Map &Map, const EnvironmentOptions &options, int algorithm);
+        SearchResult startSearch(ILogger *Logger, const Map &Map, const EnvironmentOptions &options, int algorithm, int heuristic_weight);
 
     protected:
         //CODE HERE
         static double heuristic(const Node &node, const Map &map, const EnvironmentOptions &options, int algorithm);
-        static std::vector<Node> generateAllSuccs(Node &cur, const Map &map, const EnvironmentOptions &options, int algorithm);
+        static std::vector<Node> generateAllSuccs(Node &cur, const Map &map, const EnvironmentOptions &options, int algorithm, int heuristic_weight);
         static int xDiff(Node &first, Node &second);
         static int yDiff(Node &first, Node &second);
 

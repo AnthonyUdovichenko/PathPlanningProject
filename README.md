@@ -30,7 +30,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<grid>` — сама карта<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<row>` — строка карты<br>
 &nbsp;&nbsp;&nbsp;&nbsp; `<algorithm>` — параметры алгоритма<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<metrictype>` — метрика, используемая в эвристической функции (`euclidean`, `manhattan`, `chebyshev` или `diagonal`)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<metrictype>` — метрика, используемая в эвристической функции (`euclidean`, `manhattan`, `chebyshev`, `diagonal`)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<searchtype>` — алгоритм поиска (`dijkstra` или `astar`)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<hweight>` — вес эвристики<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<allowdiagonal>` — можно ли делать диагональные ходы<br>
