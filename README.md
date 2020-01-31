@@ -38,6 +38,20 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<allowsqueeze>` — можно ли делать ходы через "бутылочное горлышко"<br>
 &nbsp;&nbsp;&nbsp;&nbsp; `<options>` — параметры отображения результата
 
+### Выходные данные
+
+Результат работы представляется в виде XML-файла, в котором, помимо входных данных, есть следующая информация:
+
+&nbsp;&nbsp;&nbsp;&nbsp; `<log>`<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<mapfilename>` — путь к файлу со входными данными<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<summary>` — количество шагов, количество сгенерированных узлов, длина пути, время поиска ответа<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<path>` — исходная карта и обозначенный на ней путь<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<row>` — строка карты<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<lplevel>` — путь в виде последовательности узлов<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<node>` — координаты узла и его номер<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<hplevel>` — путь в виде последовательности секций<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<section>` — координаты начала и конца секции и её длина
+
 ### Сборка и запуск
 
 Сборку проекта возможно осуществить двумя способами:
