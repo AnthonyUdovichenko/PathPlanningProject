@@ -23,6 +23,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp; `<map>` — параметры карты<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<width>` — ширина карты (количество клеток по оси X)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<height>` — высота карты (количество клеток по оси Y)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<cellsize>` — размер клеток карты<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<startx>` — координата начальной точки по X<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<starty>` — координата начальной точки по Y<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `<finishx>` — координата конечной точки по X<br>
